@@ -1,1 +1,8 @@
+# Assembler output
+*.o
+
+# Build directories
+build*/
+
+# IDE Generated files and folders
 .idea/
