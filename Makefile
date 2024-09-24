@@ -1,9 +1,21 @@
-BUILD_DIR := ./build
 
-SUB_PROJECTS := i386 x86_64 
+MODULES := i386 x86_64 
+MODULES_CLEAN := $(addsuffix .clean, $(MODULES))
+MODULES_REAL_CLEAN := $(addsuffix .realclean, $(MODULES))
 
-all: $(SUB_PROJECTS)
-	mkdir -p $(BUILD_DIR)
+.PHONY: all clean realclean $(MODULES) $(MODULES_CLEAN)
 
-$(SUB_PROJECTS):
-	cd $@ && $(MAKE)
+all: $(MODULES)
+
+clean: $(MODULES_CLEAN)
+realclean: $(MODULES_REAL_CLEAN)
+
+$(MODULES):
+	$(MAKE) -C $@;
+
+$(MODULES_CLEAN): 
+	$(MAKE) -C $(basename $@) clean;
+
+$(MODULES_REAL_CLEAN):
+	$(MAKE) -C $(basename $@) realclean
+
