@@ -1,5 +1,7 @@
 SECTION .data
-  msg db 'Hello, brave new world!', 0Ah
+  msg db 'Hello, World!',0Ah
+  ; used if we didn't have strlen
+  ;msg_len equ $-msg
 
 SECTION .text
 global _start
@@ -19,10 +21,12 @@ _start:
   mov eax, 1
   int 80h
 
+; strlen begin
 strlen:
   push ebx
   mov ebx, eax
 
+; loop
 nextchar:
   cmp byte[eax], 0
   jz finished
@@ -33,3 +37,4 @@ finished:
   sub eax, ebx
   pop ebx
   ret
+; strlen end
