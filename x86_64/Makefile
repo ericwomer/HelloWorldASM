@@ -25,7 +25,7 @@ $(BUILD_DIR)/%.asm.o: %.asm
 
 .PHONY: clean
 clean:
-	rm -vf $(BUILD_DIR)/%.asm.o $(BUILD_DIR)/$(TARGET_EXECUTABLE) 
+	rm -vf $(OBJECTS) $(BUILD_DIR)/$(TARGET_EXECUTABLE) 
 
 realclean:
 	rm -rf $(BUILD_DIR)
