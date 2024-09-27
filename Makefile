@@ -1,5 +1,5 @@
 
-MODULES := i386 x86_64 
+MODULES := i386 x86_64 libc 
 MODULES_CLEAN := $(addsuffix .clean, $(MODULES))
 MODULES_REAL_CLEAN := $(addsuffix .realclean, $(MODULES))
 
