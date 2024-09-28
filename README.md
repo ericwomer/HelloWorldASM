@@ -1,5 +1,5 @@
 # Hello, World! Assembly Project (NASM/Linux) 
-Yet Another Assembly Hello World Projcet <sub>_YAAHWP_</sub>
+Yet Another Assembly Hello World Projcet <sup>_YAAHWP_</sup>
 
 ## i386
 32bit program printing out "Hello, World!"
