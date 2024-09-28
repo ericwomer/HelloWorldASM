@@ -15,7 +15,7 @@ endif
 
 ASM := nasm
 
-LINKER := mold 
+LINKER := ld 
 LINKER_FLAGS := -m elf_i386 -no-pie $(LIBRARY_PATH) $(LIBRARIES)
 
 SRCS := $(shell find $(SRC_DIR) -iname '*.asm')

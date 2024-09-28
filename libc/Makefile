@@ -15,7 +15,7 @@ endif
 
 ASM := nasm
 
-LINKER := gcc
+LINKER_gcc := gcc
 LINKER_FLAGS := -no-pie $(LIBRARY_PATH) $(LIBRARIES)
 
 SRCS := $(shell find $(SRC_DIR) -iname '*.asm')
@@ -28,7 +28,7 @@ LIBRARIES :=
 LIBRARY_PATH :=
 
 $(BUILD_DIR)/$(TARGET_EXECUTABLE): $(OBJECTS) 
-	$(LINKER) $(LINKER_FLAGS) $(OBJECTS) -o $@
+	$(LINKER_gcc) $(LINKER_FLAGS) $(OBJECTS) -o $@
  
 $(BUILD_DIR)/%.asm.o: %.asm
 	mkdir -p $(dir $@)
