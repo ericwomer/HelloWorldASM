@@ -1,8 +1,22 @@
 #https://makefiletutorial.com/
-TARGET_EXECUTABLE := helloc
+TARGET_EXECUTABLE := helloc.x86_64
+BUILD_DIR := ./Build
+SRC_DIR := ./src
+REALCLEAN_DIR := $(BUILD_DIR)
 
-BUILD_DIR :=./build
-SRC_DIR :=./src
+ifeq ($(RELEASE), 1)
+	BUILD_DIR := $(BUILD_DIR)/Release
+	ASM_FLAGS := -W+all -f elf64 -Ox $(INC_FLAGS)
+else
+	TARGET_EXECUTABLE := $(addprefix $(TARGET_EXECUTABLE),_dbg)	
+	BUILD_DIR := $(BUILD_DIR)/Debug
+	ASM_FLAGS := -W+all -f elf64 -g -O0 $(INC_FLAGS)
+endif
+
+ASM := nasm
+
+LINKER := gcc
+LINKER_FLAGS := -no-pie $(LIBRARY_PATH) $(LIBRARIES)
 
 SRCS := $(shell find $(SRC_DIR) -iname '*.asm')
 OBJECTS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -10,11 +24,8 @@ OBJECTS := $(SRCS:%=$(BUILD_DIR)/%.o)
 INC_DIR := $(shell find $(SRC_DIR) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIR))
 
-ASM := nasm
-ASM_FLAGS := -f elf64 -g -O0 $(INC_FLAGS)
-
-LINKER := mold
-LINKER_FLAGS := -m elf_x86_64 --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o helloc /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../..-lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+LIBRARIES :=
+LIBRARY_PATH :=
 
 $(BUILD_DIR)/$(TARGET_EXECUTABLE): $(OBJECTS) 
 	$(LINKER) $(LINKER_FLAGS) $(OBJECTS) -o $@
@@ -28,5 +39,5 @@ clean:
 	rm -vf $(OBJECTS) $(BUILD_DIR)/$(TARGET_EXECUTABLE) 
 
 realclean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(REALCLEAN_DIR)
 

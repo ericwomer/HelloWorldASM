@@ -3,6 +3,7 @@
 
 # Build directories
 build*/
+Build*/
 
 # IDE Generated files and folders
 .idea/

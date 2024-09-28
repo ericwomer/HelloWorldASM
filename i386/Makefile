@@ -1,8 +1,22 @@
-# https://makefiletutorial.com/
+#https://makefiletutorial.com/
 TARGET_EXECUTABLE := helloworld
+BUILD_DIR := ./Build
+SRC_DIR := ./src
+REALCLEAN_DIR := $(BUILD_DIR)
 
-BUILD_DIR :=./build
-SRC_DIR :=./src
+ifeq ($(RELEASE), 1)
+	BUILD_DIR := $(BUILD_DIR)/Release
+	ASM_FLAGS := -W+all -f elf32 -Ox $(INC_FLAGS)
+else
+	TARGET_EXECUTABLE := $(addprefix $(TARGET_EXECUTABLE),_dbg)
+	BUILD_DIR := $(BUILD_DIR)/Debug
+	ASM_FLAGS := -W+all -f elf32 -g -O0 $(INC_FLAGS)
+endif
+
+ASM := nasm
+
+LINKER := mold 
+LINKER_FLAGS := -m elf_i386 -no-pie $(LIBRARY_PATH) $(LIBRARIES)
 
 SRCS := $(shell find $(SRC_DIR) -iname '*.asm')
 OBJECTS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -10,11 +24,8 @@ OBJECTS := $(SRCS:%=$(BUILD_DIR)/%.o)
 INC_DIR := $(shell find $(SRC_DIR) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIR))
 
-ASM := nasm
-ASM_FLAGS := -f elf32 -g -O0 $(INC_FLAGS)
-
-LINKER := mold
-LINKER_FLAGS := -m elf_i386
+LIBRARIES :=
+LIBRARY_PATH :=
 
 $(BUILD_DIR)/$(TARGET_EXECUTABLE): $(OBJECTS) 
 	$(LINKER) $(LINKER_FLAGS) $(OBJECTS) -o $@
@@ -28,4 +39,5 @@ clean:
 	rm -vf $(OBJECTS) $(BUILD_DIR)/$(TARGET_EXECUTABLE) 
 
 realclean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(REALCLEAN_DIR)
+
