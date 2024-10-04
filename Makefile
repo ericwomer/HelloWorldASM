@@ -1,4 +1,4 @@
-MODULES := i386 x86_64 libc print_library 
+MODULES := i386 x86_64 libc print_library print_module
 MODULES_CLEAN := $(addsuffix .clean, $(MODULES))
 MODULES_REAL_CLEAN := $(addsuffix .realclean, $(MODULES))
 

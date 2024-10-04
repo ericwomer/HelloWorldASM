@@ -13,6 +13,9 @@ Yet Another Assembly Hello World Projcet <sup>_YAAHWP_</sup>
 ## print_library
 64 bit program and library that prints "Hello, Library!"
 
+## print_module
+64 bit program made out of several object files that pass variables via arguments (registers)
+
 ## Building
 All at once
 
